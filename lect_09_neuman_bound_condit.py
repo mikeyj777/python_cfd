@@ -30,7 +30,7 @@ T[-1] = 1
 T_new = T.copy()
 
 #error-related
-epsilon = 1e-8
+epsilon = 1e-5
 numerical_error = np.inf
 
 while numerical_error > epsilon:
@@ -41,7 +41,7 @@ while numerical_error > epsilon:
             # no flux at west-most face/point
             a_w = 0
         a_p = a_e + a_w
-        T_new[i]= (a_e * T_new[i+1] + a_w * T[i-1]) / a_p
+        T_new[i]= (a_e * T_new[i+1] + a_w * T_new[i-1]) / a_p
     diff = np.abs(T - T_new)
     numerical_error = diff.sum()
     iteration += 1
