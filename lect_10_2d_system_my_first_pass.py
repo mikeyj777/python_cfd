@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import axes3d
 
 # size of grid side
-N = 10
+N = 21
 Nx = N
 Ny = N
 
@@ -32,12 +32,12 @@ T[0,:] = 1
 T_new = T.copy()
 
 #error-related
-epsilon = 1e-8
+epsilon = 1e-17
 numerical_error = np.inf
 
 while numerical_error > epsilon:
-    for xi in range(Nx-1):
-        for yi in range(Ny-1):
+    for xi in range(1, Nx-1):
+        for yi in range(1, Ny-1):
             a_e = np.float64(k*A / hx)
             a_w = np.float64(k*A / hx)
             a_n = np.float64(k*A / hy)
@@ -56,18 +56,16 @@ while numerical_error > epsilon:
 # plot results
 print(f'iterations: {iteration}')
 x_dom = np.arange(Nx) * hx
-y_dom = np.arange(Ny) * hy
+y_dom = L - np.arange(Ny) * hy
 
-fig = plt.figure()
-ax = fig.gca(projection="3d")
-ax.plot3D(x_dom, y_dom, T)
+[X, Y] = np.meshgrid(x_dom, y_dom)
 
-# plt.plot(x_dom, T, 'gx--', linewidth=2)
-# plt.grid(True, color = 'k')
+plt.figure(11)
+plt.contourf(X, Y, T, 12)
 
-# plt.xlabel("Position", size=20)
-# plt.ylabel("Tenperature", size=20)
-plt.title("T(x)")
+plt.grid(True, color = 'k')
+
+plt.title("T(x, y)")
 plt.show()
 
 apple = 1
