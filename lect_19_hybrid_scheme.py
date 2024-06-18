@@ -51,7 +51,7 @@ errs = []
 def get_a_e_and_a_w(F, D):
     Pe = F/D
 
-    # hybrid approach. if abs(Pe) >= 2, use upwind scheme, ignoring diffusive forces
+    # hybrid approach. if abs(Pe) >= 2, use upwind scheme ignoring diffusive forces
     # otherwise, use central differencing
 
     a_w = np.float64(D + F / 2)
