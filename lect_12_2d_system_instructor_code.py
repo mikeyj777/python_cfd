@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import axes3d
 
 # size of grid side
-N = 21
+N = 50
 Nx = Ny = N
 
 # domain size
@@ -25,15 +25,15 @@ iteration = 0
 
 # temperature array
 T = np.zeros((Nx, Ny))
-T[0,:] = 1
+T[0, :] = 1
 
 # iterated temperature array
 T_new = T.copy()
 
 #error-related
-epsilon = 1e-8
+epsilon = 1e-17
 numerical_error = np.inf
-
+errs = []
 while numerical_error > epsilon:
     for xi in range(1, Nx-1):
         for yi in range(1, Ny-1):
@@ -41,19 +41,21 @@ while numerical_error > epsilon:
             a_w = np.float64(k*A / hx)
             a_n = np.float64(k*A / hy)
             a_s = np.float64(k*A / hy)
-            # if xi == 0:
-            #     # no flux at west-most face/point
-            #     a_w = 0
             a_p = a_e + a_w + a_n + a_s
             T_new[xi, yi]= (a_e * T_new[xi+1, yi] + a_w * T_new[xi-1, yi] + a_n * T[xi, yi-1]+ a_s * T[xi, yi+1]) / a_p
     diff = np.abs(T - T_new)
     numerical_error = diff.sum()
+    errs.append(numerical_error)
     iteration += 1
     T = T_new.copy()
-    # print(f'iter: {iteration} | err: {numerical_error} | T: {T}')
+    if iteration % 100 == 0:
+        print(f'iteration: {iteration}.  error: {numerical_error}')
 
 # plot results
-print(f'iterations: {iteration}')
+        
+plt.figure(10)
+plt.semilogy(errs, 'ko')
+
 x_dom = np.arange(Nx) * hx
 y_dom = L - np.arange(Ny) * hy
 
