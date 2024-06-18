@@ -8,7 +8,7 @@ from datetime import datetime as dt
 # Peclet number > 2 causes issues with solutions using central differencing scheme
 
 # size of grid side
-N = 75
+N = 51
 
 # domain size
 L = 1
@@ -17,13 +17,13 @@ L = 1
 h = np.float64(L / (N-1))
 
 # diffusion
-gamma = 0.1
+gamma = np.float64(0.1)
 
 # density
-rho = 1
+rho = np.float64(1)
 
 # velocity
-u = 1.5 / 0.13513513513513514
+u = np.float64(10/0.2)
 
 F = rho * u
 D = gamma / h
@@ -33,11 +33,12 @@ print(f'Peclet Number: {Pe}')
 
 # iterations
 iteration = 0
-max_iters = 1000
+max_iters = 2
 
 # temperature array
 T = np.zeros(N)
-T[0] = 1
+T[0] = 100.
+T[-1] = 500.
 
 # iterated temperature array
 T_new = T.copy()
@@ -49,7 +50,7 @@ errs = []
 
 t0 = dt.now()
 t1_prev = t0
-while numerical_error > epsilon:
+while numerical_error > epsilon and iteration < max_iters:
     for i in range(1, N-1):
         a_w = np.float64(D + F / 2)
         a_e = np.float64(D - F / 2)
@@ -74,7 +75,7 @@ plt.semilogy(errs, 'ko')
 
 x_dom = np.arange(N) * h
 plt.figure(11)
-plt.plot(x_dom, T, 'gx--', linewidth=2)
+plt.plot(x_dom, T, 'gx--', linewidth=2, markersize = 5)
 plt.grid(True, color = 'k')
 
 plt.xlabel("Position", size=20)
