@@ -1,11 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import axes3d
 
 from datetime import datetime as dt
 
 # size of grid side
-N = 21
+N = 51
 
 # domain size
 L = 1
@@ -34,10 +33,9 @@ iteration = 0
 
 # temperature array
 T = np.zeros((N, N))
-T[0, :] = 400
-T[:, 0] = 400
-T[-1, :] = 400
-T[:, -1] = 400
+T[0, :] = 1
+T[:, 0] = 1
+
 
 # iterated temperature array
 T_new = T.copy()
@@ -63,7 +61,7 @@ while numerical_error > epsilon:
     errs.append(numerical_error)
     iteration += 1
     T = T_new.copy()
-    if iteration % 100 == 0:
+    if iteration % 250 == 0:
         t1 = dt.now()
         dt1 = t1-t1_prev
         t1_prev = t1
@@ -81,7 +79,7 @@ y_dom = L - np.arange(N) * h
 [X, Y] = np.meshgrid(x_dom, y_dom)
 
 plt.figure(11)
-plt.contourf(X, Y, T, 12)
+plt.contourf(X, Y, T, 100)
 
 plt.grid(True, color = 'k')
 
